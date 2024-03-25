@@ -22,7 +22,71 @@ Testing the server and client
 
 PROGRAM:
 
+Server code
+
+echo-server.py
+
+import socket
+
+
+HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
+
+PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
+
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+
+    s.bind((HOST, PORT))
+    
+    s.listen()
+    
+    conn, addr = s.accept()
+    
+    with conn:
+    
+        print(f"Connected by {addr}")
+        
+        while True:
+        
+            data = conn.recv(1024)
+            
+            if not data:
+            
+                break
+                
+            conn.sendall(data)   
+
+Client code
+
+echo-client.py
+
+import socket
+
+
+HOST = "127.0.0.1"  # The server's hostname or IP address
+
+PORT = 65432  # The port used by the server
+
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+
+    s.connect((HOST, PORT))
+    
+    s.sendall(b"Hello, world")
+    
+    data = s.recv(1024)
+    
+print(f"Received {data!r}")
+
 OUTPUT:
+
+echo-server.py
+
+![305321785-d99acecb-8ad6-49bd-a81d-7e88dcce22da](https://github.com/Karthik2821/echoserver-and-client/assets/134921933/6ce93a11-f43a-4e75-9c1d-ee8a87676265)
+
+echo-client.py
+
+![305321822-a6e5f245-ce72-4406-a2f0-67b58d8b0389](https://github.com/Karthik2821/echoserver-and-client/assets/134921933/82cae286-d063-4517-ab5f-4b609adfc514)
 
 RESULT:
 
